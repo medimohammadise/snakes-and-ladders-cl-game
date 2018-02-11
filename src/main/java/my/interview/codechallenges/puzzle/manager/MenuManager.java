@@ -1,11 +1,45 @@
 package my.interview.codechallenges.puzzle.manager;
-
-
+import my.interview.codechallenges.puzzle.domain.Game;
+import my.interview.codechallenges.puzzle.io.UserInputProcessor;
 import my.interview.codechallenges.puzzle.menu.MainMenuItem;
-
-
 public class MenuManager {
-	 public void dispalyMenu() {
-		
+	private static final String TAB = "\t";
+	private static final String SEPARATOR = ": ";
+	private Game game;
+	int menuChoce=-1;
+	 public MenuManager(Game game) {
+		 this.game=game;
 	 }
+	 
+	 public void dispalyMenu() {
+		System.out.println("Welcome to Sanke and Ladder Game");
+		 int menuKey=1;
+		 for (MainMenuItem menuItem:MainMenuItem.values())
+		 {
+			 System.out.println(TAB+menuKey+SEPARATOR+menuItem);
+			 menuKey++;
+		 }
+		 UserInputProcessor userInputProcessor=new UserInputProcessor();
+		 
+		 do
+		 {
+			 menuChoce=userInputProcessor.tryReadingInputAsInt(MainMenuItem.values().length);
+			 switch (menuChoce){
+				 case 1:
+					 
+					 this.game.play();
+		             break;
+		         case 2:
+		        	 	System.out.println(menuChoce);
+		             break;
+		         case 3:
+		        	 	System.out.println(menuChoce);
+		             break;
+		         default:
+			 }
+		}
+		while(menuChoce!=3) ;
+		 
+	 }
+	 
 }

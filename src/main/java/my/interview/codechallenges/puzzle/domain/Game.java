@@ -13,11 +13,11 @@ public class Game {
 	public Game(String[] playerNames, int numSquares, int[][] snakes, int[][] ladders) {
 		makeBoard(numSquares, ladders, snakes);
 		makePlayers(playerNames);
-		userInputProcessor=new UserInputProcessor();
+		userInputProcessor = new UserInputProcessor();
 	}
 
 	private void makeBoard(int numSquares, int[][] ladders, int[][] snakes) {
-		board= new Board(numSquares,ladders, snakes);
+		board = new Board(numSquares, ladders, snakes);
 	}
 
 	private void makePlayers(String[] playerNames) {
@@ -38,24 +38,22 @@ public class Game {
 		System.out.println("Initial state : \n" + this);
 		while (notOver()) {
 			userInputProcessor.tryReadingInputAsInt(2);
-			
 			int roll = dice.roll();
-			
 			System.out.println("Current player is " + currentPlayer() + " and rolls " + roll);
-			movePlayer(roll,currentPlayer());
+			movePlayer(roll, currentPlayer());
 			System.out.println(board.mapView());
 			System.out.println("State : \n" + this);
 		}
 		System.out.println(winner + " has won.");
 	}
 
-	private void movePlayer(int roll,Palyer player) {
-		//Palyer currentPlayer = players.remove(); // from the head ?
-		//currentPlayer.moveForward(roll);
+	private void movePlayer(int roll, Palyer player) {
+		// Palyer currentPlayer = players.remove(); // from the head ?
+		// currentPlayer.moveForward(roll);
 		player.moveForward(roll);
-		//players.add(currentPlayer); // to the tail
-		if (player.wins()) 
-			winner = player; 
+		// players.add(currentPlayer); // to the tail
+		if (player.wins())
+			winner = player;
 
 	}
 
