@@ -21,7 +21,7 @@ public class Board {
 	}
 
 	private void makeSquares(int numSquares) {
-		System.out.println("There are " + numSquares + " squares");
+		//System.out.println("There are " + numSquares + " squares");
 		int squareCount = 0;
 		for (int i = 0; i < numSquares; i++) {
 			for (int j = 0; j < numSquares; j++) {

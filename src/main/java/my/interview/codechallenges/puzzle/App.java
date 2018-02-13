@@ -3,6 +3,7 @@ package my.interview.codechallenges.puzzle;
 
 import my.interview.codechallenges.puzzle.domain.Game;
 import my.interview.codechallenges.puzzle.io.UserInputProcessor;
+import my.interview.codechallenges.puzzle.manager.AsciiArtManager;
 import my.interview.codechallenges.puzzle.manager.MenuManager;
 
 /**
@@ -21,9 +22,10 @@ public class App
 		// internally is at 0
 		int[][] snakesFromTo = { {5,11} };
 		int[][] laddersFromTo = { {2,6} , {7,9} ,{5,12}};
+		AsciiArtManager.printAsciArt("ascii_art","snakeAndLadder");
 		MenuManager mainMenu=new MenuManager(new Game(playerNames , numSquares , snakesFromTo , laddersFromTo));
 		
-		mainMenu.dispalyMenu();
+		mainMenu.dispalyMainMenu();
 	
     }
 }

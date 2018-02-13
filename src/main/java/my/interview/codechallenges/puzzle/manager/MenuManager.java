@@ -2,6 +2,7 @@ package my.interview.codechallenges.puzzle.manager;
 import my.interview.codechallenges.puzzle.domain.Game;
 import my.interview.codechallenges.puzzle.io.UserInputProcessor;
 import my.interview.codechallenges.puzzle.menu.MainMenuItem;
+import my.interview.codechallenges.puzzle.menu.SanakeLadderMenuItem;
 public class MenuManager {
 	private static final String TAB = "\t";
 	private static final String SEPARATOR = ": ";
@@ -11,7 +12,7 @@ public class MenuManager {
 		 this.game=game;
 	 }
 	 
-	 public void dispalyMenu() {
+	 public void dispalyMainMenu() {
 		System.out.println("Welcome to Sanke and Ladder Game");
 		 int menuKey=1;
 		 for (MainMenuItem menuItem:MainMenuItem.values())
@@ -27,7 +28,7 @@ public class MenuManager {
 			 switch (menuChoce){
 				 case 1:
 					 
-					 this.game.play();
+					 this.game.play(this);
 		             break;
 		         case 2:
 		        	 	System.out.println(menuChoce);
@@ -41,5 +42,22 @@ public class MenuManager {
 		while(menuChoce!=3) ;
 		 
 	 }
-	 
+	 public int dispalySnakesandLadderMenu() {
+			System.out.println("Welcome to Sanke and Ladder Game");
+			 int menuKey=1;
+			 for (SanakeLadderMenuItem menuItem:SanakeLadderMenuItem.values())
+			 {
+				 System.out.println(TAB+menuKey+SEPARATOR+menuItem);
+				 menuKey++;
+			 }
+			 UserInputProcessor userInputProcessor=new UserInputProcessor();
+			 
+			 do
+			 {
+				 menuChoce=userInputProcessor.tryReadingInputAsInt(SanakeLadderMenuItem.values().length);
+				 return menuChoce;
+			}
+			while(menuChoce!=3) ;
+			 
+		 }
 }
