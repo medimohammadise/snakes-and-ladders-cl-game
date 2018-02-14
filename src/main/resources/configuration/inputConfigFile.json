@@ -1,0 +1,31 @@
+{
+	"playerInfo": {
+		"name": "Mehdi",
+		"story": "test"
+	},
+	"numberOfSqures": "6",
+	"sankes": [{
+		"Bova": {
+			"x":"1",
+			"y":"2"
+		},
+		"Python": {
+			"x":"5",
+			"y": "11"
+		}
+	}],
+	"ladders": [{
+		"Win": {
+			"x":"2",
+			"y": "6"
+		},
+		"Up": {
+			"x":"7",
+			"y": "9"
+		},
+		"Sucess": {
+			"x":"5",
+			"y": "12"
+		}
+	}]
+}
