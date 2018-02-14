@@ -45,4 +45,8 @@ public class UserInputProcessor {
 
 	        return -1;
 	    }
+	 public String readUserInputAsString() {
+	        return scanner.nextLine();
+	    }
+
 }

@@ -1,10 +1,13 @@
 package my.practice.codechallenges.puzzle.domain;
 
-public class Palyer {
+public class Player {
 	private Square square = null;
 	private String name;
-	public Palyer(String str) {
-		this.name=str;
+	private String id;
+	private int currentPosition;
+	public Player(String name,String id) {
+		this.name=name;
+		this.id=id;
 	}
 
 	public String getName() {
@@ -37,5 +40,30 @@ public class Palyer {
 		
 		return square.islastSquare();
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public int getCurrentPosition() {
+		return currentPosition;
+	}
+
+	public void setCurrentPosition(int currentPosition) {
+		this.currentPosition = currentPosition;
+	}
+
+	public Square getSquare() {
+		return square;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 
 }

@@ -6,7 +6,7 @@ public  class  SquareType {
 	private String name;
 	private int headPosition;
 	private int tailPosition;
-	public SquareType(int tailPosition,int headPosition,int id,String name) {
+	public SquareType(int headPosition,int tailPosition,int id,String name) {
 		this.headPosition=headPosition;
 		this.tailPosition=tailPosition;
 		this.id=id;

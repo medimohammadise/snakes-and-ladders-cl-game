@@ -107,26 +107,26 @@ public class Board {
 				if (squares.get(y).getPlayer()!=null)
 					
 				 
-					sb.append(String.format("%-4" + "s", Colors.GREEN.format("P"))+"   ");
+					sb.append(String.format("%-5" + "s", Colors.YELLOW_BG.format("P"))+"   ");
 				else
 				if (squares.get(y).getSquareType() instanceof Sanke)
 				{
 					
 					if (squares.get(y).getFallDownOrGoUpPosition(y)<0)
-					    sb.append(String.format("%-4" + "s", "S"+squares.get(y).getSquareType().getId()+"->"));
+					    sb.append(String.format("%5" + "s", Colors.RED.format("S"+squares.get(y).getSquareType().getId()+"->"))+"   ");
 					else
-						sb.append(String.format("%-4" + "s", "-S"+squares.get(y).getSquareType().getId()));
+						sb.append(String.format("%-5" + "s", "-S"+squares.get(y).getSquareType().getId()));
 				}
 				else
 				if (squares.get(y).getSquareType() instanceof Ladder)
 				{
 						if (squares.get(y).getFallDownOrGoUpPosition(y)>0)
-						    sb.append(String.format("%-4" + "s", "L"+squares.get(y).getSquareType().getId()));
+						    sb.append(String.format("%5" + "s", Colors.GREEN.format("L"+squares.get(y).getSquareType().getId()+"^"))+"   ");
 						else
-							sb.append(String.format("%-4" + "s", "L"+squares.get(y).getSquareType().getId()+"^"));
+							sb.append(String.format("%-5" + "s", "L"+squares.get(y).getSquareType().getId()));
 				}	
 				else
-					sb.append(String.format("%-4" + "d", y));
+					sb.append(String.format("%-5" + "d", y));
 				y++;
 			}
 			sb.append("\n");

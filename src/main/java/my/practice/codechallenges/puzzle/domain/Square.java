@@ -1,7 +1,7 @@
 package my.practice.codechallenges.puzzle.domain;
 
 public class Square {
-	private Palyer player = null;
+	private Player player = null;
 	private Board board = null;
 	private int position;
 	private SquareType squareType;
@@ -11,17 +11,17 @@ public class Square {
 		this.board = board;
 	}
 
-	public void enter(Palyer player) { 
+	public void enter(Player player) { 
 		this.setPlayer(player); 
 		player.setSquare(this);
 	}
 
-	private void setPlayer(Palyer player) {
+	private void setPlayer(Player player) {
 		this.player=player;
 		
 	}
 
-	public void leave(Palyer palyer) {
+	public void leave(Player palyer) {
 		this.setPlayer(null);
 		
 	}
@@ -36,13 +36,11 @@ public class Square {
 			+ " so don’t move");
 			return this;
 		}
-		else {
+		
+		Square newSquare=this.findRelativeSquare(moves);
 			System.out.println("move from "
 			+ (this.getPosition()) + " to "
 			+ (this.findRelativeSquare(moves).getPosition()));
-			
-		}
-		Square newSquare=this.findRelativeSquare(moves);
 		return  newSquare.isOccupied() ? newSquare.findLastSquare() : newSquare;
 	}
 
@@ -51,7 +49,7 @@ public class Square {
 	}
 
 	
-	public Palyer getPlayer() {
+	public Player getPlayer() {
 		
 		return player;
 	}
@@ -60,13 +58,13 @@ public class Square {
 		Square newSquare= board.findSquare(position + moves);
 		if (newSquare.getSquareType() instanceof Ladder && newSquare.getFallDownOrGoUpPosition(position + moves)>0)
 		{
-			System.out.println("You are moving up in the ladder to "+newSquare.getSquareType().getHeadPosition());	
-			return board.findSquare(newSquare.getSquareType().getHeadPosition());
+			System.out.println("You are moving up in the ladder to "+newSquare.getSquareType().getTailPosition());	
+			return board.findSquare(newSquare.getSquareType().getTailPosition());
 		}
 		else
 		if (newSquare.getSquareType() instanceof Sanke && newSquare.getFallDownOrGoUpPosition(position + moves)<0)
 		{
-			System.out.println("You are falling down because the snake bit You!" + newSquare.getSquareType().getTailPosition() );	
+			System.out.println("You are falling down because the snake bit You at this square " + newSquare.getSquareType().getHeadPosition() );	
 			return board.findSquare(newSquare.getSquareType().getTailPosition());
 				
 		}
@@ -97,7 +95,7 @@ public class Square {
 	public int getFallDownOrGoUpPosition(int position) {
 		if (this.getSquareType() instanceof Sanke && this.getSquareType().getHeadPosition()==position)
 			return -1*this.getSquareType().getTailPosition();
-		if (this.getSquareType() instanceof Ladder && this.getSquareType().getTailPosition()==position)
+		if (this.getSquareType() instanceof Ladder && this.getSquareType().getHeadPosition()==position)
 			return this.getSquareType().getTailPosition();
 		
 			

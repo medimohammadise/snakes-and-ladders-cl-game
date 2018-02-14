@@ -5,27 +5,22 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import my.practice.codechallenges.puzzle.io.GameConfigurationPorcessor;
 import my.practice.codechallenges.puzzle.io.UserInputProcessor;
 import my.practice.codechallenges.puzzle.manager.AsciiArtManager;
 import my.practice.codechallenges.puzzle.manager.MenuManager;
 
 public class Game {
-	private LinkedList<Palyer> players = new LinkedList<Palyer>();
+	private LinkedList<Player> players = new LinkedList<Player>();
 	private Board board = null;
-	private Palyer winner;
+	private Player winner;
 	private UserInputProcessor userInputProcessor;
-
-	public Game(Map<String,Object> gameConfiguration) {
-		String[] playerNames = {"Monica"}; 
+    private Map<String,Object> gameConfiguration;
+	public Game(Map<String,Object> gameConfiguration,Player player) {
+		this.gameConfiguration=gameConfiguration;
 		int numSquares = Integer.valueOf(gameConfiguration.get("numberOfSqures").toString());
-		// for the user first square is1 at position 1 but
-		// internally is at 0
-		int[][] snakesFromTo = { {5,11} };
-		int[][] laddersFromTo = { {2,6} , {7,9} ,{5,12}};
-		
-		
 		makeBoard(numSquares, (ArrayList)gameConfiguration.get("ladders"),  (ArrayList)gameConfiguration.get("sankes"));
-		makePlayers(playerNames);
+		makePlayers(player);
 		userInputProcessor = new UserInputProcessor();
 	}
 
@@ -33,50 +28,49 @@ public class Game {
 		board = new Board(numSquares, ladders, snakes);
 	}
 
-	private void makePlayers(String[] playerNames) {
-		assert playerNames.length > 0 : "There must be some player";
-		for (String str : playerNames) {
-			Palyer player = new Palyer(str);
-			players.add(player); // adds to the end System.out.println(i + ". " + str); i++;
-		}
+	private void makePlayers(Player player) {
+		players.add(player); 	
 	}
 
 	public void play(MenuManager menuManager) {
 		int roll=0;
+		boolean stopped=false;
 		assert !players.isEmpty() : "No players to play";
 		assert board != null : "No scoreboard to play";
 		Dice dice = new Dice();
 		startGame();
 		System.out.println(board.mapView());	
-		while (notOver()) {
+		
+		while (notOver() || !stopped) {
 			int gameChoce=menuManager.dispalySnakesandLadderMenu();
 			switch (gameChoce){
 			 case 1:
-				 
 				 roll = dice.roll();
+				 movePlayer(roll, currentPlayer());
+			     System.out.println(board.mapView());
+			    
 	             break;
 	         case 2:
-	        	 System.out.println("map value");
+	        	 	System.out.println("map value");
 	             break;
 	         case 3:
-	        	 	System.out.println("Save and exit");
+	        	 	 GameConfigurationPorcessor.saveStateIntoJson("configuration","inputConfigFile.json",this.gameConfiguration);
+	        	 	 stopped=true;
 	             break;
 	         default:
 		 }
-			//userInputProcessor.tryReadingInputAsInt(2);
 			
-			//System.out.println("Current player is " + currentPlayer() + " and rolls " + roll);
-			movePlayer(roll, currentPlayer());
-			System.out.println(board.mapView());
-			//System.out.println("State : \n" + this);
+		}
+		if (!stopped) 
+		{
+			AsciiArtManager.printAsciArt("ascii_art", "GreateYouWon");
+		     System.out.println(winner + " has won.");
 		}
 		
-		AsciiArtManager.printAsciArt("ascii_art", "GreateYouWon");
-		System.out.println(winner + " has won.");
 	}
 
-	private void movePlayer(int roll, Palyer player) {
-		// Palyer currentPlayer = players.remove(); // from the head ?
+	private void movePlayer(int roll, Player player) {
+		// Player currentPlayer = players.remove(); // from the head ?
 		// currentPlayer.moveForward(roll);
 		player.moveForward(roll);
 		// players.add(currentPlayer); // to the tail
@@ -85,7 +79,7 @@ public class Game {
 
 	}
 
-	private Palyer currentPlayer() {
+	private Player currentPlayer() {
 		assert players.size() > 0;
 		return players.peek();
 	}
@@ -97,7 +91,7 @@ public class Game {
 	}
 
 	private void placePlayersAtFirstSquare() {
-		for (Palyer player : players) {
+		for (Player player : players) {
 			board.firstSquare().enter(player);
 		}
 
@@ -110,7 +104,7 @@ public class Game {
 	@Override
 	public String toString() {
 		String str = new String();
-		for (Palyer player : players) {
+		for (Player player : players) {
 			str += player.getName() + " is at square " + (player.position()) + "\n";
 		}
 		return str;
