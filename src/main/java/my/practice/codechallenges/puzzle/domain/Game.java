@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import my.practice.codechallenges.puzzle.io.GameConfigurationPorcessor;
 import my.practice.codechallenges.puzzle.io.UserInputProcessor;
 import my.practice.codechallenges.puzzle.manager.AsciiArtManager;
+import my.practice.codechallenges.puzzle.manager.GameStateManager;
 import my.practice.codechallenges.puzzle.manager.MenuManager;
 
 public class Game {
@@ -19,12 +21,12 @@ public class Game {
 	public Game(Map<String,Object> gameConfiguration,Player player) {
 		this.gameConfiguration=gameConfiguration;
 		int numSquares = Integer.valueOf(gameConfiguration.get("numberOfSqures").toString());
-		makeBoard(numSquares, (ArrayList)gameConfiguration.get("ladders"),  (ArrayList)gameConfiguration.get("sankes"));
+		makeBoard(numSquares, (Map)gameConfiguration.get("ladders"),  (Map)gameConfiguration.get("sankes"));
 		makePlayers(player);
 		userInputProcessor = new UserInputProcessor();
 	}
 
-	private void makeBoard(int numSquares, ArrayList ladders, ArrayList snakes) {
+	private void makeBoard(int numSquares, Map ladders, Map snakes) {
 		board = new Board(numSquares, ladders, snakes);
 	}
 
@@ -32,13 +34,16 @@ public class Game {
 		players.add(player); 	
 	}
 
-	public void play(MenuManager menuManager) {
+	public void play(MenuManager menuManager,boolean resume) {
 		int roll=0;
 		boolean stopped=false;
 		assert !players.isEmpty() : "No players to play";
 		assert board != null : "No scoreboard to play";
 		Dice dice = new Dice();
-		startGame();
+		if (resume) 
+			resumeGame(this.players.get(0));
+		else
+			startGame();
 		System.out.println(board.mapView());	
 		
 		while (notOver() || !stopped) {
@@ -46,6 +51,8 @@ public class Game {
 			switch (gameChoce){
 			 case 1:
 				 roll = dice.roll();
+				 AsciiArtManager.printAsciArt("ascii_art", "Dice-"+roll);
+				 
 				 movePlayer(roll, currentPlayer());
 			     System.out.println(board.mapView());
 			    
@@ -54,8 +61,21 @@ public class Game {
 	        	 	System.out.println("map value");
 	             break;
 	         case 3:
-	        	 	 GameConfigurationPorcessor.saveStateIntoJson("configuration","inputConfigFile.json",this.gameConfiguration);
-	        	 	 stopped=true;
+	        	 	 this.gameConfiguration= GameStateManager.svaePosition(gameConfiguration, players.get(0).getCurrentPosition());
+	        	 	 if (GameConfigurationPorcessor.saveStateIntoJson("configuration","inputConfigFile.json",this.gameConfiguration,players.getFirst().getId()))
+	        	 	 {
+	        	 		 System.out.println("You game sucessfull saved. Game existing within 20 second...");
+	        	 		 try {
+							TimeUnit.SECONDS.sleep(20);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	        	 		 System.exit(1);
+	        	 		stopped=true;
+	        	 	 }
+	        	 	 
+	        	 	 
 	             break;
 	         default:
 		 }
@@ -89,11 +109,21 @@ public class Game {
 		winner = null;
 
 	}
+	private void resumeGame(Player palyer) {
+		placePlayersAtPreviouseSquare(palyer);
+		winner = null;
 
+	}
 	private void placePlayersAtFirstSquare() {
 		for (Player player : players) {
 			board.firstSquare().enter(player);
 		}
+
+	}
+	private void placePlayersAtPreviouseSquare(Player palyer) {
+		
+			board.findSquare(GameStateManager.getPreviousePosition(gameConfiguration)).enter(palyer);;
+		
 
 	}
 

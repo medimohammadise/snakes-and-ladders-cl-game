@@ -15,7 +15,7 @@ public class Board {
 	private static int MINNUMSQUARES = 10;
 	private int numSquares;
 
-	public Board(int numSquares, ArrayList ladders, ArrayList snakes) {
+	public Board(int numSquares, Map ladders, Map snakes) {
 		assert numSquares > MINNUMSQUARES : "There must be at least " + MINNUMSQUARES + " squares";
 		this.numSquares = numSquares;
 		squares = new HashMap<>();
@@ -38,24 +38,23 @@ public class Board {
 
 	}
 
-	private void makeLadders(ArrayList ladders,String squareType) {
+	private void makeLadders(Map ladders,String squareType) {
 		int x=0;
 		int y=0;
 		int ladderCount=0;
 		String ladderName="";
 		SquareType newRole=null;
 		
-		for (Object entry :ladders) {
-			Map<String,Object> listMap=(Map)entry;
-			for (Map.Entry listEntry :listMap.entrySet()) {
-				ladderName=(String) listEntry.getKey();
-				Map<String,String> cordinateMap=(Map)listEntry.getValue();
+		for (Object key : ladders.keySet()) { {
+			ladderName=key.toString();
+			Map<String,String> valueList = (Map<String, String>) ladders.get(key);
+			for (Map.Entry listEntry : valueList.entrySet()) {
 				
-				for (Map.Entry cordinateEntry :cordinateMap.entrySet()) {
-					if (cordinateEntry.getKey().equals("x")) 
-					    x=Integer.valueOf(cordinateEntry.getValue().toString());
+				
+					if (listEntry.getKey().equals("x")) 
+					    x=Integer.valueOf(listEntry.getValue().toString());
 					else
-						y=Integer.valueOf(cordinateEntry.getValue().toString());
+						y=Integer.valueOf(listEntry.getValue().toString());
 				}
 				
 				if (squareType.equals("L"))

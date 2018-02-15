@@ -18,8 +18,10 @@ public class AsciiArtManager {
 	        	   return null;
 	  }
 	 public static void printAsciArt(String basePath,String filename) {
-		 System.out.println(ConsoleColors.RED_BOLD+readAsString(basePath,filename));
+		 String artString=readAsString(basePath,filename);
+		 System.out.println(ConsoleColors.RED_BOLD+artString);
 		 System.out.println(ConsoleColors.RESET);
+		 
 	 }
 	 
 }

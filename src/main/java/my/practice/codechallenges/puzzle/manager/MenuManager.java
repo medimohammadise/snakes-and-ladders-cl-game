@@ -26,31 +26,40 @@ public class MenuManager {
 	}
 	 
 	 public void dispalyMainMenu(Game game,boolean resume) {
-		 int menuKey=1;
-		 for (MainMenuItem menuItem:MainMenuItem.values())
+		 if (!resume)
 		 {
-			 System.out.println(TAB+menuKey+SEPARATOR+menuItem);
-			 menuKey++;
-		 }
-		
-		 
-		 do
-		 {
-			 menuChoce=userInputProcessor.tryReadingInputAsInt(MainMenuItem.values().length);
-			 switch (menuChoce){
-				 case 1:
-					 game.play(this);
-		             break;
-		         case 2:
-		        	 	System.out.println(menuChoce);
-		             break;
-		         case 3:
-		        	 	System.out.println(menuChoce);
-		             break;
-		         default:
+			 int menuKey=1;
+			 for (MainMenuItem menuItem:MainMenuItem.values())
+			 {
+				 System.out.println(TAB+menuKey+SEPARATOR+menuItem);
+				 menuKey++;
 			 }
-		}
-		while(menuChoce!=3) ;
+			
+			 
+			 do
+			 {
+				 menuChoce=userInputProcessor.tryReadingInputAsInt(MainMenuItem.values().length);
+				 switch (menuChoce){
+					 case 1:
+						 game.play(this,resume);
+			             break;
+			         case 2:
+			        	 	System.out.println(menuChoce);
+			             break;
+			         case 3:
+			        	 	System.out.println(menuChoce);
+			             break;
+			         case 5:
+			        	 	System.exit(1);
+			             break;    
+			         default:
+				 }
+			}
+			while(menuChoce!=3) ;
+		 }
+		 else
+			 
+			 game.play(this,resume);
 		 
 	 }
 	 

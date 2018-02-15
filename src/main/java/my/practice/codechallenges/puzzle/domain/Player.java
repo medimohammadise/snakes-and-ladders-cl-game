@@ -33,6 +33,7 @@ public class Player {
 		square.leave(this);
 		square = square.moveAndLand(moves); 
 		square.enter(this);
+		setCurrentPosition(square.getPosition());
 		
 	}
 

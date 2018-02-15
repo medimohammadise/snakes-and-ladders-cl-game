@@ -1,13 +1,14 @@
 package my.practice.codechallenges.puzzle.io;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +19,9 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import javax.tools.JavaFileObject;
-import jdk.nashorn.api.scripting.*;
 
-import my.practice.codechallenges.puzzle.manager.AsciiArtManager;
+import jdk.nashorn.api.scripting.JSObject;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 public class GameConfigurationPorcessor {
 	private static final String EXTRACTOR_SCRIPT = "var fun = function(raw) { " + "var json = JSON.parse(raw); "
@@ -30,16 +30,85 @@ public class GameConfigurationPorcessor {
 	public static void main(String args[]) {
 		readDataFromFile("configuration", "inputConfigFile.json");
 	}
-	public static boolean saveStateIntoJson(String basePath, String filename,Map<String, Object> configMap) {
-		for (Map.Entry entry : configMap.entrySet()) {
-			System.out.println("Item : " + entry.getKey() + " " + entry.getValue());
+
+private static String getJsonFromMap(Map<String, Object> map) {
+		
+	StringBuilder sb = new StringBuilder();
+	boolean multipleValue=false;
+	for (String key : map.keySet()) {
+		Object value = map.get(key);
+		if (value instanceof Map<?, ?>) {
+			
+			multipleValue=true;
+			value = getJsonFromMap((Map<String, Object>) value);
+			
+		} else if (value instanceof ArrayList) {
+			ArrayList valueList = ((ArrayList) value);
+			/*if (sb.length() > 0)
+				sb.append(",");
+			 sb.append("\"" + key + "\"" + ":" +"[{" );*/
+			
+			multipleValue=true;
+			for (int i = 0; i < valueList.size(); i++) {
+				
+				if (valueList.get(i) instanceof Map<?, ?>) {
+					value = getJsonFromMap((Map<String, Object>) valueList.get(i));
+				}
+				
+			}
+			/*if (sb.length() > 0)
+				sb.append(",");
+			sb.append("\"" + key + "\"" + ":" +"\"" + value + "\"" );
+			sb.append("]}");*/
+
 		}
-		return true;
+		
+			if (sb.length() > 0)
+				sb.append(",");
+			if (!"".equals(value) && !multipleValue)
+			   sb.append("\"" + key + "\"" + ":" +"\"" + value + "\"" );
+			else
+			{
+				
+				sb.append("\"" + key + "\"" + ":" +"{"+ value + "}" );
+				multipleValue=false;
+			}
 	}
 	
+	return sb.toString();
+
+	
+	}
+
+
+	public static boolean saveStateIntoJson(String basePath, String filename, Map<String, Object> configMap,String playerId) {
+		/*
+		 * for (Map.Entry entry : configMap.entrySet()) { System.out.println("Item : " +
+		 * entry.getKey() + " " + entry.getValue()); }
+		 */
+		
+		String jsonForWrite="{"+getJsonFromMap(configMap)+"}";
+		String dir = GameConfigurationPorcessor.class.getResource("/" + basePath + "/").getFile();
+        //String dir = WriteResource.class.getResource("/dir").getFile();
+        OutputStream os=null;
+		try {
+			os = new FileOutputStream(dir + "/"+playerId+".json");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        final PrintStream printStream = new PrintStream(os);
+        printStream.println(jsonForWrite);
+        printStream.close();
+        
+         
+		return true;
+	}
+
 	public static Map<String, Object> readDataFromFile(String basePath, String filename) {
 
-		InputStream resourceAsStream = AsciiArtManager.class.getResourceAsStream("/" + basePath + "/" + filename);
+		InputStream resourceAsStream = GameConfigurationPorcessor.class.getResourceAsStream("/" + basePath + "/" + filename);
+		if (resourceAsStream==null) return null;  //there is no record for player before
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(resourceAsStream));
 		List<String> list = new ArrayList<>();
 		StringBuilder sb = new StringBuilder();
@@ -57,7 +126,7 @@ public class GameConfigurationPorcessor {
 				sb.append(name);
 			}
 		});
-		//System.out.println(sb);
+		// System.out.println(sb);
 		ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
 
 		try {

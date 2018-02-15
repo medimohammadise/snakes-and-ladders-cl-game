@@ -29,32 +29,38 @@ public class App
 		
 		
 		Map<String,Object> playerInfoMap=null;
-		Map<String,Object> gameConfiguration= GameConfigurationPorcessor.readDataFromFile("configuration","inputConfigFile.json");
-		ArrayList<Map> playListConfiguration=(ArrayList<Map>) gameConfiguration.get("playList");
+		Map<String,Object> gameConfiguration= GameConfigurationPorcessor.readDataFromFile("configuration",player.getId()+".json");
+		if (gameConfiguration==null)
+		{
+			System.out.println("welcome "+player.getName()+ "! We do not have previouse game record , Initializing new game for You.");
+			gameConfiguration= GameConfigurationPorcessor.readDataFromFile("configuration","inputConfigFile.json");
+		}
+		//ArrayList<Map> playListConfiguration=(ArrayList<Map>) gameConfiguration.get("playList");
+		playerInfoMap=(Map<String,Object>)gameConfiguration.get("playerInfo");
+		if (player.getId().equals(playerInfoMap.get("id")))
+		{
 		
-	    while (playerConfigCount<playListConfiguration.size() && playerNotFound)
+			if (playerInfoMap.get("currentposition")!=null&& !"".equals(playerInfoMap.get("currentposition")) && Integer.valueOf(playerInfoMap.get("currentposition").toString())>0)
+			{
+				System.out.println("You have not completed your last challange , We are loading your last status... ");
+				mainMenu.dispalyMainMenu(new Game(gameConfiguration,player),true);
+				
+			}
+			else
+			{
+				System.out.println("You found your profile , We are loading new game for You... ");
+				mainMenu.dispalyMainMenu(new Game(gameConfiguration,player),false);
+			}
+			playerNotFound=false;
+		}
+		
+	    /*while (playerConfigCount<playListConfiguration.size() && playerNotFound)
 	    {
-	    		playerInfoMap=(Map<String,Object>)playListConfiguration.get(playerConfigCount).get("playerInfo");
-	    		if (player.getId().equals(playerInfoMap.get("id")))
-	    		{
-	    			playerInfoMap=(Map<String,Object>)playListConfiguration.get(playerConfigCount);
-	    			if (playerInfoMap.get("currentposition")!=null&&Integer.valueOf(playerInfoMap.get("currentposition").toString())>0)
-	    			{
-						System.out.println("You have not completed your last challange , We are loading your last status... ");
-						mainMenu.dispalyMainMenu(new Game(playerInfoMap,player),true);
-						
-	    			}
-	    			else
-	    			{
-	    				System.out.println("You found your profile , We are loading new game for You... ");
-	    				mainMenu.dispalyMainMenu(new Game(playerInfoMap,player),false);
-	    			}
-	    			playerNotFound=false;
-	    		}
+	    		
 	    		playerConfigCount++;
-	    }
-	    
-		if (playerNotFound) mainMenu.dispalyMainMenu(new Game((Map<String,Object>)playListConfiguration.get(0),player),false);
+	    }*/
+	   // GameConfigurationPorcessor.saveStateIntoJson("configuration","inputConfigFile.json", (Map<String,Object>)playListConfiguration.get(0),player.getId());
+		if (playerNotFound) mainMenu.dispalyMainMenu(new Game(gameConfiguration,player),false);
 		
 	   
     }
