@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
+import static my.practice.codechallenges.puzzle.setting.Constants.ASCII_ART_DIR_NAME;
 
 import my.practice.codechallenges.puzzle.io.ConsoleColors;
 
@@ -17,8 +18,8 @@ public class AsciiArtManager {
 	        else
 	        	   return null;
 	  }
-	 public static void printAsciArt(String basePath,String filename) {
-		 String artString=readAsString(basePath,filename);
+	 public static void printAsciArt(String filename) {
+		 String artString=readAsString(ASCII_ART_DIR_NAME,filename);
 		 System.out.println(ConsoleColors.RED_BOLD+artString);
 		 System.out.println(ConsoleColors.RESET);
 		 

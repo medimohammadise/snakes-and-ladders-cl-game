@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import my.practice.codechallenges.puzzle.io.Colors;
 import my.practice.codechallenges.puzzle.io.GameConfigurationPorcessor;
 import my.practice.codechallenges.puzzle.io.UserInputProcessor;
 import my.practice.codechallenges.puzzle.manager.AsciiArtManager;
@@ -51,7 +52,7 @@ public class Game {
 			switch (gameChoce){
 			 case 1:
 				 roll = dice.roll();
-				 AsciiArtManager.printAsciArt("ascii_art", "Dice-"+roll);
+				 AsciiArtManager.printAsciArt("Dice-"+roll);
 				 
 				 movePlayer(roll, currentPlayer());
 			     System.out.println(board.mapView());
@@ -60,13 +61,15 @@ public class Game {
 	         case 2:
 	        	 	System.out.println("map value");
 	             break;
-	         case 3:
+	         case 3 :
+	        	 		System.out.println(showMapLegend()); 
+	        	 		break;
+	         case 4:
 	        	 	 this.gameConfiguration= GameStateManager.svaePosition(gameConfiguration, players.get(0).getCurrentPosition());
-	        	 	 if (GameConfigurationPorcessor.saveStateIntoJson("configuration",players.getFirst().getId()+".json",this.gameConfiguration,players.getFirst().getId()))
-	        	 	 {
-	        	 		exitGame();
+	        	 	
+	        	 		exitGame(true);
 	        	 		stopped=true;
-	        	 	 }
+	        	 	 
 	        	 	 
 	        	 	 
 	             break;
@@ -76,11 +79,27 @@ public class Game {
 		}
 		if (!stopped) 
 		{
-			AsciiArtManager.printAsciArt("ascii_art", "GreateYouWon");
+			AsciiArtManager.printAsciArt("GreateYouWon");
 			GameStateManager.saveAsWinner(gameConfiguration);
-			exitGame();
+			
+	    	 		exitGame(true);
+	    	 		stopped=true;
+	    	 	 
 		}
 		
+	}
+
+	private String showMapLegend() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("\n");
+		sb.append("****************************\n");
+		sb.append(String.format("%-5" + "s", Colors.YELLOW_BG.format("P")) + "   "+"Player\n");
+		sb.append(String.format("%5" + "s",Colors.RED.format("S->")) + "   "+"Snake's Head\n" );
+		sb.append(String.format("%5" + "s",Colors.RED.format("-S")) + "   "+"Snake's Tail\n" );
+		sb.append(String.format("%5" + "s",Colors.GREEN.format("L^")) + "   "+"Ladder's Head\n" );
+		sb.append(String.format("%5" + "s",Colors.GREEN.format("L")) + "   "+"Ladder's Tail\n" );
+		sb.append("All snakes and ladders soecified by unique");
+		return sb.toString();
 	}
 
 	private void movePlayer(int roll, Player player) {
@@ -125,7 +144,10 @@ public class Game {
 		return winner == null;
 	}
 	
-	public void exitGame() {
+	public void exitGame(boolean saveBeforeExit) {
+		if (saveBeforeExit)
+	       GameConfigurationPorcessor.saveStateIntoJson("configuration",players.getFirst().getId()+".json",this.gameConfiguration,players.getFirst().getId());
+   	 	
 		System.out.println("You game sucessfull saved. Game existing within 20 second...");
 		 try {
 			TimeUnit.SECONDS.sleep(20);

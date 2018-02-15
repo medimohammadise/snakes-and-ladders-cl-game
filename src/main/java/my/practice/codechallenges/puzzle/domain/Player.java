@@ -5,11 +5,17 @@ public class Player {
 	private String name;
 	private String id;
 	private int currentPosition;
+	private int star;
 	public Player(String name,String id) {
 		this.name=name;
 		this.id=id;
 	}
-
+	public Player(String name,String id,int star,int currentposition) {
+		this.name=name;
+		this.id=id;
+		this.star=star;
+		this.currentPosition=currentposition;		
+	}
 	public String getName() {
 		// TODO Auto-generated method stub
 		return name;

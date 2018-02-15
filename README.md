@@ -10,7 +10,8 @@ When I was a child I used to play SnakesAndLadder game with my brothers . Still 
 Below is the class diagram proposed for the implementation  
 
 ## Development
-
+   Configuration data is being load from Json and Game stated also is being saved in Json file. It is totally clear can user can change the configuration data using Json file.
+   I did not use any external library and I had do rely on JDK8 only and This was the most challenging part for development. 
 ## Testing
 
 ## Future extensions

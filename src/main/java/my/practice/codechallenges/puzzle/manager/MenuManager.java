@@ -1,84 +1,93 @@
 package my.practice.codechallenges.puzzle.manager;
+
+import static my.practice.codechallenges.puzzle.setting.Constants.MENU_SEPARATOR;
+import static my.practice.codechallenges.puzzle.setting.Constants.NEW_LINE;
+import static my.practice.codechallenges.puzzle.setting.Constants.TAB;
+import static my.practice.codechallenges.puzzle.setting.Constants.YES;
+
+import java.util.Map;
+
 import my.practice.codechallenges.puzzle.domain.Game;
 import my.practice.codechallenges.puzzle.domain.Player;
+import my.practice.codechallenges.puzzle.io.GameConfigurationPorcessor;
 import my.practice.codechallenges.puzzle.io.UserInputProcessor;
 import my.practice.codechallenges.puzzle.menu.MainMenuItem;
 import my.practice.codechallenges.puzzle.menu.PlayerMenuItem;
 import my.practice.codechallenges.puzzle.menu.SanakeLadderMenuItem;
 public class MenuManager {
-	private static final String TAB = "\t";
-	private static final String SEPARATOR = ": ";
-	
-	 UserInputProcessor userInputProcessor=null;
-	int menuChoce=-1;
-	 public MenuManager() {
-		 
-		 userInputProcessor=new UserInputProcessor();
-	 }
-	 public Player dispalyPlayerInfoMenu() {
-		 String playerName,playerId="";
-		 System.out.println(TAB+PlayerMenuItem.PLAYER_NAME);
-		 playerName=userInputProcessor.readUserInputAsString();
-		 System.out.println(TAB+PlayerMenuItem.PLAYER_ID);
-		 playerId=userInputProcessor.readUserInputAsString();
-		 return new Player(playerName,playerId)	;	 
-			 
+	UserInputProcessor userInputProcessor = null;
+	int menuChoce = -1;
+
+	public MenuManager() {
+
+		userInputProcessor = new UserInputProcessor();
 	}
-	 
-	 public void dispalyMainMenu(Game game,boolean resume) {
-		 if (!resume)
-		 {
-			 int menuKey=1;
-			 for (MainMenuItem menuItem:MainMenuItem.values())
-			 {
-				 System.out.println(TAB+menuKey+SEPARATOR+menuItem);
-				 menuKey++;
-			 }
-			
-			 
-			 do
-			 {
-				 menuChoce=userInputProcessor.tryReadingInputAsInt(MainMenuItem.values().length);
-				 switch (menuChoce){
-					 case 1:
-						 game.play(this,resume);
-			             break;
-			         case 2:
-			        	 	System.out.println(menuChoce);
-			             break;
-			         case 3:
-			        	 	System.out.println(menuChoce);
-			             break;
-			         case 5:
-			        	 	System.exit(1);
-			             break;    
-			         default:
-				 }
+
+	private void printMenuItem(String menuItem) {
+		System.out.print(TAB + menuItem);
+	}
+    
+	public boolean resumePreviousGame() {
+		printMenuItem(PlayerMenuItem.RESUME_PREVIOUS_GAME .toString() + MENU_SEPARATOR);
+		return (userInputProcessor.readUserInputAsString().equalsIgnoreCase(YES)?true:false);
+	}
+	public Player dispalyPlayerInfoMenu() {
+		String playerName, playerId = "";
+		printMenuItem(PlayerMenuItem.PLAYER_NAME.toString() + MENU_SEPARATOR);
+		playerName = userInputProcessor.readUserInputAsString();
+		
+		printMenuItem(PlayerMenuItem.PLAYER_ID.toString() + MENU_SEPARATOR);
+		playerId = userInputProcessor.readUserInputAsString();
+		return new Player(playerName, playerId);
+	}
+
+	public void dispalyMainMenu(Game game,Player player, boolean resume) {
+		if (!resume) {
+			int menuKey = 1;
+			for (MainMenuItem menuItem : MainMenuItem.values()) {
+				printMenuItem(menuKey + MENU_SEPARATOR + menuItem + NEW_LINE);
+				menuKey++;
 			}
-			while(menuChoce!=3) ;
-		 }
-		 else
-			 
-			 game.play(this,resume);
-		 
-	 }
-	 
-	 public int dispalySnakesandLadderMenu() {
-			System.out.println("Welcome to Sanke and Ladder Game");
-			 int menuKey=1;
-			 for (SanakeLadderMenuItem menuItem:SanakeLadderMenuItem.values())
-			 {
-				 System.out.println(TAB+menuKey+SEPARATOR+menuItem);
-				 menuKey++;
-			 }
-			 UserInputProcessor userInputProcessor=new UserInputProcessor();
-			 
-			 do
-			 {
-				 menuChoce=userInputProcessor.tryReadingInputAsInt(SanakeLadderMenuItem.values().length);
-				 return menuChoce;
-			}
-			while(menuChoce!=3) ;
-			 
-		 }
+			do {
+				menuChoce = userInputProcessor.tryReadingInputAsInt(MainMenuItem.values().length);
+				switch (menuChoce) {
+				case 1: //PLAY
+					game.play(this, resume);
+					break;
+				case 2: //LOAD PREVIOUSE ONE 
+					Map<String, Object> gameConfiguration = GameConfigurationPorcessor.readDataFromFile(player.getId(), false);
+					new Game(gameConfiguration, player).play(this, true);
+				break;
+				case 3: //CHANGE CONFIG
+					
+					break;
+				case 4: //DISPALY WINNERS
+					
+					break;	
+				case 5: //EXIT
+					game.exitGame(false);
+					break;
+				default:
+				}
+			} while (menuChoce != 3);
+		} else
+
+			game.play(this, resume);
+
+	}
+
+	public int dispalySnakesandLadderMenu() {
+		int menuKey = 1;
+		for (SanakeLadderMenuItem menuItem : SanakeLadderMenuItem.values()) {
+			printMenuItem(menuKey + MENU_SEPARATOR + menuItem + NEW_LINE);
+			menuKey++;
+		}
+		UserInputProcessor userInputProcessor = new UserInputProcessor();
+
+		do {
+			menuChoce = userInputProcessor.tryReadingInputAsInt(SanakeLadderMenuItem.values().length);
+			return menuChoce;
+		} while (menuChoce != 3);
+
+	}
 }
