@@ -15,5 +15,14 @@ public class GameStateManager {
 	  playerInfoMap.put("currentposition", position);
 	  return gameConfiguration;
   }
+  public static  Map<String,Object> saveAsWinner(Map<String,Object> gameConfiguration){
+	  Map<String,Object> playerInfoMap=(Map<String,Object>)gameConfiguration.get("playerInfo");
+	  if (playerInfoMap.get("star")!=null&& !"".equals(playerInfoMap.get("star")) && Integer.valueOf(playerInfoMap.get("star").toString())>0)
+		  playerInfoMap.put("currentposition", Integer.valueOf(playerInfoMap.get("star").toString())+1);
+	  else
+		  playerInfoMap.put("star", 1);
+	return playerInfoMap; 
+	  
+  }
   
 }

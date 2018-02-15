@@ -82,7 +82,7 @@ public class Square {
 		return board.lastSquare();
 	}
 	public Boolean islastSquare() {
-		return position==findLastSquare().getPosition();
+		return this.position==findLastSquare().getPosition();
 	}
 
 	public SquareType getSquareType() {

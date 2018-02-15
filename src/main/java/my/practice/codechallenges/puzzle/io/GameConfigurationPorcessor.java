@@ -1,8 +1,10 @@
 package my.practice.codechallenges.puzzle.io;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,7 +30,7 @@ public class GameConfigurationPorcessor {
 			+ "return json;}";
 
 	public static void main(String args[]) {
-		readDataFromFile("configuration", "inputConfigFile.json");
+		readDataFromFile("configuration", "inputConfigFile.json",false);
 	}
 
 private static String getJsonFromMap(Map<String, Object> map) {
@@ -88,7 +90,15 @@ private static String getJsonFromMap(Map<String, Object> map) {
 		 */
 		
 		String jsonForWrite="{"+getJsonFromMap(configMap)+"}";
-		String dir = GameConfigurationPorcessor.class.getResource("/" + basePath + "/").getFile();
+		
+		File directory = new File("./PlayesProfile/");
+	    if (! directory.exists()){
+	        directory.mkdir();
+	        // If you require it to make the entire directory path including parents,
+	        // use directory.mkdirs(); here instead.
+	    }
+;
+		String dir = "./PlayesProfile/";
         //String dir = WriteResource.class.getResource("/dir").getFile();
         OutputStream os=null;
 		try {
@@ -105,11 +115,29 @@ private static String getJsonFromMap(Map<String, Object> map) {
 		return true;
 	}
 
-	public static Map<String, Object> readDataFromFile(String basePath, String filename) {
-
-		InputStream resourceAsStream = GameConfigurationPorcessor.class.getResourceAsStream("/" + basePath + "/" + filename);
-		if (resourceAsStream==null) return null;  //there is no record for player before
-		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(resourceAsStream));
+	public static Map<String, Object> readDataFromFile(String basePath, String filename,boolean defaultProfile) {
+		InputStream resourceAsStream=null;
+		InputStream InputStreamReader=null;
+		BufferedReader bufferReader=null;
+		FileReader fileReader = null;
+		if (defaultProfile)
+		{
+			resourceAsStream = GameConfigurationPorcessor.class.getResourceAsStream("/" + basePath + "/" + filename);
+			if (resourceAsStream==null) return null;  //there is no record for player before
+			bufferReader = new BufferedReader(new InputStreamReader(resourceAsStream));
+		}
+		else
+		{
+			try {
+				fileReader = new FileReader("./PlayesProfile/" + filename);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				System.out.println("./PlayesProfile/" + filename +" not found loading default profile");
+				return  null;
+			}
+			bufferReader = new BufferedReader(fileReader);
+			
+		}
 		List<String> list = new ArrayList<>();
 		StringBuilder sb = new StringBuilder();
 		try (BufferedReader br = bufferReader) {
@@ -118,7 +146,9 @@ private static String getJsonFromMap(Map<String, Object> map) {
 			// sb.append(list);
 
 		} catch (IOException e) {
+			
 			e.printStackTrace();
+			return null;  //there is no record for player before
 		}
 
 		list.forEach(new Consumer<String>() {

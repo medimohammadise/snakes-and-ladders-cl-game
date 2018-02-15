@@ -14,7 +14,7 @@ import my.practice.codechallenges.puzzle.manager.MenuManager;
  * Hello world!
  *
  */
-public class App 
+public class SnakesandLaddersApp 
 {
     
 	public static void main( String[] args )
@@ -29,11 +29,11 @@ public class App
 		
 		
 		Map<String,Object> playerInfoMap=null;
-		Map<String,Object> gameConfiguration= GameConfigurationPorcessor.readDataFromFile("configuration",player.getId()+".json");
+		Map<String,Object> gameConfiguration= GameConfigurationPorcessor.readDataFromFile("configuration",player.getId()+".json",false);
 		if (gameConfiguration==null)
 		{
 			System.out.println("welcome "+player.getName()+ "! We do not have previouse game record , Initializing new game for You.");
-			gameConfiguration= GameConfigurationPorcessor.readDataFromFile("configuration","inputConfigFile.json");
+			gameConfiguration= GameConfigurationPorcessor.readDataFromFile("configuration","inputConfigFile.json",true);
 		}
 		//ArrayList<Map> playListConfiguration=(ArrayList<Map>) gameConfiguration.get("playList");
 		playerInfoMap=(Map<String,Object>)gameConfiguration.get("playerInfo");

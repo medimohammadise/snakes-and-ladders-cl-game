@@ -46,7 +46,7 @@ public class Game {
 			startGame();
 		System.out.println(board.mapView());	
 		
-		while (notOver() || !stopped) {
+		while (notOver() && !stopped) {
 			int gameChoce=menuManager.dispalySnakesandLadderMenu();
 			switch (gameChoce){
 			 case 1:
@@ -62,16 +62,9 @@ public class Game {
 	             break;
 	         case 3:
 	        	 	 this.gameConfiguration= GameStateManager.svaePosition(gameConfiguration, players.get(0).getCurrentPosition());
-	        	 	 if (GameConfigurationPorcessor.saveStateIntoJson("configuration","inputConfigFile.json",this.gameConfiguration,players.getFirst().getId()))
+	        	 	 if (GameConfigurationPorcessor.saveStateIntoJson("configuration",players.getFirst().getId()+".json",this.gameConfiguration,players.getFirst().getId()))
 	        	 	 {
-	        	 		 System.out.println("You game sucessfull saved. Game existing within 20 second...");
-	        	 		 try {
-							TimeUnit.SECONDS.sleep(20);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-	        	 		 System.exit(1);
+	        	 		exitGame();
 	        	 		stopped=true;
 	        	 	 }
 	        	 	 
@@ -84,7 +77,8 @@ public class Game {
 		if (!stopped) 
 		{
 			AsciiArtManager.printAsciArt("ascii_art", "GreateYouWon");
-		     System.out.println(winner + " has won.");
+			GameStateManager.saveAsWinner(gameConfiguration);
+			exitGame();
 		}
 		
 	}
@@ -130,6 +124,17 @@ public class Game {
 	private boolean notOver() {
 		return winner == null;
 	}
+	
+	public void exitGame() {
+		System.out.println("You game sucessfull saved. Game existing within 20 second...");
+		 try {
+			TimeUnit.SECONDS.sleep(20);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 System.exit(1);
+	}
 
 	@Override
 	public String toString() {
@@ -139,4 +144,5 @@ public class Game {
 		}
 		return str;
 	}
+	
 }
