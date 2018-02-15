@@ -11,7 +11,6 @@ my/practice/codechallenges/puzzle/manager/MenuManager.class
 my/practice/codechallenges/puzzle/domain/Player.class
 my/practice/codechallenges/puzzle/menu/MainMenuItem.class
 my/practice/codechallenges/puzzle/io/Colors.class
-my/practice/codechallenges/puzzle/manager/ContextManager.class
 my/practice/codechallenges/puzzle/io/ConsoleColors.class
 my/practice/codechallenges/puzzle/io/UserInputProcessor.class
 my/practice/codechallenges/puzzle/domain/Board.class

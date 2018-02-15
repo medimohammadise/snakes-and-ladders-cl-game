@@ -18,11 +18,12 @@ public class Game {
 	private Board board = null;
 	private Player winner;
 	private UserInputProcessor userInputProcessor;
-    private Map<String,Object> gameConfiguration;
-	public Game(Map<String,Object> gameConfiguration,Player player) {
-		this.gameConfiguration=gameConfiguration;
+	private Map<String, Object> gameConfiguration;
+
+	public Game(Map<String, Object> gameConfiguration, Player player) {
+		this.gameConfiguration = gameConfiguration;
 		int numSquares = Integer.valueOf(gameConfiguration.get("numberOfSqures").toString());
-		makeBoard(numSquares, (Map)gameConfiguration.get("ladders"),  (Map)gameConfiguration.get("sankes"));
+		makeBoard(numSquares, (Map) gameConfiguration.get("ladders"), (Map) gameConfiguration.get("sankes"));
 		makePlayers(player);
 		userInputProcessor = new UserInputProcessor();
 	}
@@ -32,72 +33,73 @@ public class Game {
 	}
 
 	private void makePlayers(Player player) {
-		players.add(player); 	
+		players.add(player);
 	}
 
-	public void play(MenuManager menuManager,boolean resume) {
-		int roll=0;
-		boolean stopped=false;
+	public void play(MenuManager menuManager, boolean resume) {
+		int roll = 0;
+		boolean stopped = false;
 		assert !players.isEmpty() : "No players to play";
 		assert board != null : "No scoreboard to play";
 		Dice dice = new Dice();
-		if (resume) 
+		if (resume)
 			resumeGame(this.players.get(0));
 		else
 			startGame();
-		System.out.println(board.mapView());	
-		
+		System.out.println(board.mapView());
+
 		while (notOver() && !stopped) {
-			int gameChoce=menuManager.dispalySnakesandLadderMenu();
-			switch (gameChoce){
-			 case 1:
-				 roll = dice.roll();
-				 AsciiArtManager.printAsciArt("Dice-"+roll);
-				 
-				 movePlayer(roll, currentPlayer());
-			     System.out.println(board.mapView());
-			    
-	             break;
-	         case 2:
-	        	 	System.out.println("map value");
-	             break;
-	         case 3 :
-	        	 		System.out.println(showMapLegend()); 
-	        	 		break;
-	         case 4:
-	        	 	 this.gameConfiguration= GameStateManager.svaePosition(gameConfiguration, players.get(0).getCurrentPosition());
-	        	 	
-	        	 		exitGame(true);
-	        	 		stopped=true;
-	        	 	 
-	        	 	 
-	        	 	 
-	             break;
-	         default:
-		 }
-			
+			int gameChoce = menuManager.dispalySnakesandLadderMenu();
+			switch (gameChoce) {
+			case 1: // DICE
+				roll = dice.roll();
+				AsciiArtManager.printAsciArt("Dice-" + roll);
+
+				movePlayer(roll, currentPlayer());
+				System.out.println(board.mapView());
+
+				break;
+			case 2:// Show Map
+				board.setShowMap(!board.isShowMap());
+				break;
+			case 3: //Show legend
+				System.out.println(showMapLegend());
+				break;
+			case 4: //Main Menu
+				menuManager.dispalyMainMenu(this, players.getFirst(), false);
+				break;	
+			case 5: //save configuration
+				this.gameConfiguration = GameStateManager.svaePosition(gameConfiguration,
+						players.get(0).getCurrentPosition());
+
+				exitGame(true);
+				stopped = true;
+
+				break;
+			default:
+			}
+
 		}
-		if (!stopped) 
-		{
+		if (!stopped) {
 			AsciiArtManager.printAsciArt("GreateYouWon");
 			GameStateManager.saveAsWinner(gameConfiguration);
-			
-	    	 		exitGame(true);
-	    	 		stopped=true;
-	    	 	 
+
+			exitGame(true);
+			stopped = true;
+
 		}
-		
+
 	}
 
 	private String showMapLegend() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\n");
 		sb.append("****************************\n");
-		sb.append(String.format("%-5" + "s", Colors.YELLOW_BG.format("P")) + "   "+"Player\n");
-		sb.append(String.format("%5" + "s",Colors.RED.format("S->")) + "   "+"Snake's Head\n" );
-		sb.append(String.format("%5" + "s",Colors.RED.format("-S")) + "   "+"Snake's Tail\n" );
-		sb.append(String.format("%5" + "s",Colors.GREEN.format("L^")) + "   "+"Ladder's Head\n" );
-		sb.append(String.format("%5" + "s",Colors.GREEN.format("L")) + "   "+"Ladder's Tail\n" );
+		sb.append(String.format("%-5" + "s", Colors.YELLOW_BG.format("P")) + "   " + "Player\n");
+		sb.append(String.format("%5" + "s", Colors.RED.format("S->")) + "   " + "Snake's Head\n");
+		sb.append(String.format("%5" + "s", Colors.RED.format("-S")) + "   " + "Snake's Tail\n");
+		sb.append(String.format("%5" + "s", Colors.GREEN.format("L^")) + "   " + "Ladder's Head\n");
+		sb.append(String.format("%5" + "s", Colors.GREEN.format("L")) + "   " + "Ladder's Tail\n");
 		sb.append("All snakes and ladders soecified by unique");
 		return sb.toString();
 	}
@@ -122,40 +124,44 @@ public class Game {
 		winner = null;
 
 	}
+
 	private void resumeGame(Player palyer) {
 		placePlayersAtPreviouseSquare(palyer);
 		winner = null;
 
 	}
+
 	private void placePlayersAtFirstSquare() {
 		for (Player player : players) {
 			board.firstSquare().enter(player);
 		}
 
 	}
+
 	private void placePlayersAtPreviouseSquare(Player palyer) {
-		
-			board.findSquare(GameStateManager.getPreviousePosition(gameConfiguration)).enter(palyer);;
-		
+
+		board.findSquare(GameStateManager.getPreviousePosition(gameConfiguration)).enter(palyer);
+		;
 
 	}
 
 	private boolean notOver() {
 		return winner == null;
 	}
-	
+
 	public void exitGame(boolean saveBeforeExit) {
 		if (saveBeforeExit)
-	       GameConfigurationPorcessor.saveStateIntoJson("configuration",players.getFirst().getId()+".json",this.gameConfiguration,players.getFirst().getId());
-   	 	
+			GameConfigurationPorcessor.saveStateIntoJson("configuration", players.getFirst().getId() + ".json",
+					this.gameConfiguration, players.getFirst().getId());
+
 		System.out.println("You game sucessfull saved. Game existing within 20 second...");
-		 try {
+		try {
 			TimeUnit.SECONDS.sleep(20);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 System.exit(1);
+		System.exit(1);
 	}
 
 	@Override
@@ -166,5 +172,5 @@ public class Game {
 		}
 		return str;
 	}
-	
+
 }

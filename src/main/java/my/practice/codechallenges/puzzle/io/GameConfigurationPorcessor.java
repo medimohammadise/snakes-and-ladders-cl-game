@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,10 +25,14 @@ import javax.script.ScriptException;
 
 import jdk.nashorn.api.scripting.JSObject;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import my.practice.codechallenges.puzzle.domain.Player;
+import my.practice.codechallenges.puzzle.manager.GameStateManager;
+
 import static my.practice.codechallenges.puzzle.setting.Constants.PLAYER_CONFIG_DIR;
 import static my.practice.codechallenges.puzzle.setting.Constants.INIT_CONFIG_FILE;
 import static my.practice.codechallenges.puzzle.setting.Constants.PLAYER_PROFILE_DIR;
-
+import static my.practice.codechallenges.puzzle.setting.Constants.GAME_INFO_KEY_PLAYER;
+import static my.practice.codechallenges.puzzle.setting.Constants.GAME_INFO_KEY_PLAYER_STAR;
 
 /*
  * This class is the hardest part I had to do that.Imagine that there is no GSON or ObjectMapper. But the nice part is that I could do that finally
@@ -78,7 +83,6 @@ public class GameConfigurationPorcessor {
 		return stringBuilder.toString();
 
 	}
-	
 
 	public static boolean saveStateIntoJson(String basePath, String filename, Map<String, Object> configMap,
 			String playerId) {
@@ -89,7 +93,7 @@ public class GameConfigurationPorcessor {
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
-		
+
 		OutputStream os = null;
 		try {
 			os = new FileOutputStream(PLAYER_PROFILE_DIR + "/" + playerId + ".json");
@@ -103,9 +107,10 @@ public class GameConfigurationPorcessor {
 
 		return true;
 	}
-   /*
-    * load data from game initial configuration data from json file
-    */
+
+	/*
+	 * load data from game initial configuration data from json file
+	 */
 	public static Map<String, Object> readDataFromFile(String filename, boolean defaultProfile) {
 		InputStream resourceAsStream = null;
 		BufferedReader bufferReader = null;
@@ -187,6 +192,21 @@ public class GameConfigurationPorcessor {
 		} else {
 			return scriptObj;
 		}
+	}
+
+	public static List<Player> getWinnersList() {
+		Player winner = null;
+		List<Player> winners = new ArrayList<Player>();
+		File directory = new File(PLAYER_PROFILE_DIR);
+		for (final File fileEntry : directory.listFiles()) {
+			Map<String, Object> configMap = readDataFromFile(fileEntry.getName().substring(0, fileEntry.getName().length()-5), false);
+			if (configMap!=null) winner = GameStateManager.getPlayerInfo(configMap);
+			if (winner!=null && winner.getStar() > 0)
+				winners.add(winner);
+
+		}
+
+		return winners;
 	}
 
 }

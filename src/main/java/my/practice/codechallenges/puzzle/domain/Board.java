@@ -9,6 +9,7 @@ public class Board {
 	private Map<Integer, Square> squares = null;
 	private static int MINNUMSQUARES = 10;
 	private int numSquares;
+	private boolean showMap=true;
 
 	public Board(int numSquares, Map ladders, Map snakes) {
 		assert numSquares > MINNUMSQUARES : "There must be at least " + MINNUMSQUARES + " squares";
@@ -116,9 +117,20 @@ public class Board {
 			}
 			sb.append("\n");
 		}
-
-		return sb.toString();
+		if (this.showMap)
+			return sb.toString();
+		else
+			return "Showing map has disabbled by Player";
 
 	}
+
+	public boolean isShowMap() {
+		return showMap;
+	}
+
+	public void setShowMap(boolean showMap) {
+		this.showMap = showMap;
+	}
+	
 
 }

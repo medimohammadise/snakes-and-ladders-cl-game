@@ -71,6 +71,12 @@ public class Player {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public int getStar() {
+		return star;
+	}
+	public void setStar(int star) {
+		this.star = star;
+	}
 	
 
 }

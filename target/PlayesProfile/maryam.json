@@ -1,1 +1,1 @@
-{"numberOfSqures":"6","ladders":{"Sucess":{"x":"5","y":"12"},"Up":{"x":"7","y":"9"},"Win":{"x":"2","y":"6"}},"playerInfo":{"star":{},"name":"Mehdi","id":"maryam","currentposition":"35"},"sankes":{"Bova":{"x":"2","y":"1"},"Kobra":{"x":"34","y":"20"},"Python":{"x":"11","y":"8"}}}
+{"numberOfSqures":"6","ladders":{"Sucess":{"x":"5","y":"12"},"Up":{"x":"7","y":"9"},"Win":{"x":"2","y":"6"}},"playerInfo":{"star":"1","name":"Mehdi","id":"maryam","currentposition":"35"},"sankes":{"Bova":{"x":"2","y":"1"},"Kobra":{"x":"34","y":"20"},"Python":{"x":"11","y":"8"}}}

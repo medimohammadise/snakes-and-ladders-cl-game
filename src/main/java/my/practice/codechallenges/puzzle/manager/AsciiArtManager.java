@@ -5,10 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 import static my.practice.codechallenges.puzzle.setting.Constants.ASCII_ART_DIR_NAME;
-
 import my.practice.codechallenges.puzzle.io.ConsoleColors;
-
-
 
 public class AsciiArtManager {
 	 private static String readAsString(String basePath, String filename) {
@@ -24,5 +21,4 @@ public class AsciiArtManager {
 		 System.out.println(ConsoleColors.RESET);
 		 
 	 }
-	 
 }
