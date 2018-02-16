@@ -26,7 +26,7 @@ When I was a child I used to play Snakes&Ladders game with my brothers . Still I
     Java -jar SnakesLaddersGame-0.0.1-SNAPSHOT.jar
 ## Configuration
    According that configuration is reading from and writing into Json file , It is clear and You can adjust default setting for the game by adjusting json . You can find json files it in PlayersProfile in the same directory that You are running the game .   Json files named by Player's ID.
-   
+   ```javascript
    {
 	"numberOfSqures": "8",
 	"playerInfo": {
@@ -72,7 +72,7 @@ When I was a child I used to play Snakes&Ladders game with my brothers . Still I
 		}
 		}
 }
-
+```
  Note : for Snakes always specify head at top x>y and do vice versa for the Ladder x<y. numberOfSqures specify Game's Board dimension
  
 ## Future extensions
