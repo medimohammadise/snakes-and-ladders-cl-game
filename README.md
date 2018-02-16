@@ -8,13 +8,17 @@ When I was a child I used to play Snakes&Ladders game with my brothers . Still I
     2- Ladder : If Player put his/her step in some squares it might be a ladder and can expedite the trip.  Winner is the one that who sucessfully reach last square  
     
 ## Design
-  Below is the class diagram proposed for the implementation.
+  I have simple Domain classes (in domain package) . 
+  Game generate a Borad, Board contains n*n squares . Player moves between squares. Ladder or Snake's head and tail could be located at each square.
+  We have 3 Menus for communicating with user (in menu package).
+  For IO because of clearity and ease of configuration I choose to use Json file.
+  
    
 ## Limitations
    This version is limited to single player only by the way it would be easy to extend it
 ## Development
    Configuration data is being load from Json and Game stated also is being saved in Json file. It is totally clear can user can change the configuration data using Json file.
-   I did not use any external library and I had do rely on JDK8 only and This was the most challenging part for development. 
+   I did not use any external library and I had do rely on JDK8 only and This was the most challenging part for development. For validating Json I have used JDK*'th java script engine(nashorn).
    Project got very clear packaging structure and I have tried hard to make it as simple as possible.
 
 ## Testing
