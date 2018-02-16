@@ -7,25 +7,26 @@ When I was a child I used to play Snakes&Ladders game with my brothers . Still I
     1- Snake  : If player put his/her step in snake's square will get sniffed by the snake.   
     2- Ladder : If Player put his/her step in some squares it might be a ladder and can expedite the trip.  Winner is the one that who sucessfully reach last square  
     
-## Design
+## Design Decisions
   I have simple Domain classes (in domain package) . 
   Game generate a Borad, Board contains n*n squares . Player moves between squares. Ladder or Snake's head and tail could be located at each square.
   We have 3 Menus for communicating with user (in menu package).
   For IO because of clearity and ease of configuration I choose to use Json file.
-  
+  I decided to use ascii_art somehow because They are still fantasy.
    
 ## Limitations
-   This version is limited to single player only by the way it would be easy to extend it
+   This version is limited to single player only by the way it would be easy to extend it.
+   
 ## Development
-   Configuration data is being load from Json and Game stated also is being saved in Json file. It is totally clear can user can change the configuration data using Json file.
+   Configuration data is being loaded from Json and Game state also is being saved in Json file. It is totally clear in a way that  user can change the configuration data using Json file.
    I did not use any external library and I had do rely on JDK8 only and This was the most challenging part for development. For validating Json I have used JDK*'th java script engine(nashorn).
-   Project got very clear packaging structure and I have tried hard to make it as simple as possible.
+   Project got very clear packaging structure and I have done my best to make it as simple as possible.
 
 ## Testing
-    - Just user command line it's self-explanatory enough to deal with the game
-    Java -jar SnakesLaddersGame-0.0.1-SNAPSHOT.jar
+    Just user command line it's self-explanatory enough to deal with the game :
+    Java -jar SnakesandLaddersGame-0.0.1-SNAPSHOT.jar
 ## Configuration
-   According that configuration is reading from and writing into Json file , It is clear and You can adjust default setting for the game by adjusting json . You can find json files it in PlayersProfile in the same directory that You are running the game .   Json files named by Player's ID.
+   According that configuration is reading from and writing into Json file , It is clear and You can adjust default setting for the game by adjusting json . You can find json files it in "PlayersProfile" directory in the same location that You are running the game .   Json files named by Player's ID.
    ```javascript
    {
 	"numberOfSqures": "8",
@@ -79,7 +80,7 @@ When I was a child I used to play Snakes&Ladders game with my brothers . Still I
     - MultiPlayer feature . Right now It is just supporting one player
     - Change configuration by player. Even though now It could be done by changing json config file
     - Player can fight with sankes
-    - Buy using Ladders will get positive and by winning on Snakes will get much more power and vice versa
+    - By using Ladders will get positive and by winning on Snakes will get much more power and vice versa
     - It would be possible to create new  characters other than Snake or Ladder
     - It would be possible to have multiple player on network
     
