@@ -85,7 +85,7 @@ When I was a child I used to play Snakes&Ladders game with my brothers . Still I
     - It would be possible to create new  characters other than Snake or Ladder
     - It would be possible to have multiple player on network
 ## Know issues 
-   Please try to run the game in Mac console . Ansi Characters are not showing be default on Windows10 and You can not enjoy coloring and Ascii_Arts as [#1173]:https://github.com/Microsoft/WSL/issues/1173
+   Please try to run the game in Mac console . Ansi Characters are not showing by default on Windows10 and You can not enjoy coloring and Ascii_Arts as [#1173]:https://github.com/Microsoft/WSL/issues/1173
     
    
    
