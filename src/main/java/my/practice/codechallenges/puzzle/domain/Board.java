@@ -2,17 +2,16 @@ package my.practice.codechallenges.puzzle.domain;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import static my.practice.codechallenges.puzzle.setting.Constants.MIN_NUMBER_SQUARES;
 import my.practice.codechallenges.puzzle.io.Colors;
 
 public class Board {
 	private Map<Integer, Square> squares = null;
-	private static int MINNUMSQUARES = 10;
 	private int numSquares;
 	private boolean showMap=true;
 
 	public Board(int numSquares, Map ladders, Map snakes) {
-		assert numSquares > MINNUMSQUARES : "There must be at least " + MINNUMSQUARES + " squares";
+		if (numSquares<MIN_NUMBER_SQUARES) throw new RuntimeException("Number  of squares (Board's dimension) should be more than "+MIN_NUMBER_SQUARES);
 		this.numSquares = numSquares;
 		squares = new HashMap<>();
 		makeSquares(numSquares);
@@ -59,7 +58,7 @@ public class Board {
 					newRole = new Ladder(x, y, ladderCount, ladderName);
 				else
 					newRole = new Sanke(x, y, ladderCount, ladderName);
-
+                if (x>=this.numSquares*this.numSquares || y>this.numSquares*this.numSquares) throw new RuntimeException("please correct cordinates for  x : "+x+" and y : "+y+" in the configuration file" );
 				squares.get(x).setSquareType(newRole);
 				squares.get(y).setSquareType(newRole);
 				ladderCount++;

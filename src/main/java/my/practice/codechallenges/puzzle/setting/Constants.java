@@ -19,4 +19,5 @@ public  class  Constants {
 	public static final int MAX_RETRY_FOR_INPUT = 5;
 	public static final int DIC_MINVALUE = 1;
 	public static final int DIC_MAXVALUE = 6;
+	public static final int MIN_NUMBER_SQUARES = 6;
 }
