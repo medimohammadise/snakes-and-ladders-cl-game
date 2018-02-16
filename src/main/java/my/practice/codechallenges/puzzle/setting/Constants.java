@@ -6,7 +6,7 @@ public  class  Constants {
 	public static final String MENU_SEPARATOR = ": ";
 	public static final String NEW_LINE = "\n";
 	public static final String PLAYER_CONFIG_DIR="configuration";
-	public static final String PLAYER_PROFILE_DIR="./PlayesProfile/";
+	public static final String PLAYER_PROFILE_DIR="./PlayersProfile/";
 	public static final String INIT_CONFIG_FILE="inputConfigFile.json";
 	public static final String GAME_INFO_KEY_PLAYER="playerInfo";
 	public static final String GAME_INFO_KEY_PLAYER_NAME="name";
