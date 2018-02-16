@@ -25,6 +25,7 @@ When I was a child I used to play Snakes&Ladders game with my brothers . Still I
 ## Testing
     Just user command line it's self-explanatory enough to deal with the game :
     Java -jar SnakesandLaddersGame-0.0.1-SNAPSHOT.jar
+    
 ## Configuration
    According that configuration is reading from and writing into Json file , It is clear and You can adjust default setting for the game by adjusting json . You can find json files it in "PlayersProfile" directory in the same location that You are running the game .   Json files named by Player's ID.
    ```javascript
@@ -83,7 +84,8 @@ When I was a child I used to play Snakes&Ladders game with my brothers . Still I
     - By using Ladders will get positive and by winning on Snakes will get much more power and vice versa
     - It would be possible to create new  characters other than Snake or Ladder
     - It would be possible to have multiple player on network
-    
+## Know issues 
+   Please try to run the game in Mac console . Ansi Characters are not showing be default on Windows10 and You can not enjoy coloring and Ascii_Arts as [i1173]:https://github.com/Microsoft/WSL/issues/1173
     
    
    
