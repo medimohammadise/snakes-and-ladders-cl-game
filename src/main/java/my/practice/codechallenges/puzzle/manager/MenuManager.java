@@ -62,16 +62,16 @@ public class MenuManager {
 					System.out.println("Sorry , This feature is not avilable in this relaese , You can do this by changig Player json file, It is crystal clear!");
 					break;
 				case 4: //DISPALY WINNERS
-					System.out.println("****Name*************ID ***********STAR**");
+					System.out.println("**** Name  ************* ID  ***********  STAR**");
 					for (Player winner:GameConfigurationPorcessor.getWinnersList())
-						System.out.println(winner.getName() + "  "+winner.getId() +" " +winner.getStar());
+						System.out.println(winner.getName() + "            "+winner.getId() +"                    " +winner.getStar());
 					break;	
 				case 5: //EXIT
 					game.exitGame(false);
 					break;
 				default:
 				}
-			} while (menuChoce != 3);
+			} while (menuChoce != 5);
 		} else
 
 			game.play(this, resume);

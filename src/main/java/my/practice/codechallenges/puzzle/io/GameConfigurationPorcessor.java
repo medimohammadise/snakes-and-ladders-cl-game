@@ -125,8 +125,7 @@ public class GameConfigurationPorcessor {
 			try {
 				fileReader = new FileReader(PLAYER_PROFILE_DIR + filename + ".json");
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				System.out.println("./PlayesProfile/" + filename + ".json not found loading default profile");
+				//System.out.println("./PlayesProfile/" + filename + ".json not found loading default profile");
 				return null;
 			}
 			bufferReader = new BufferedReader(fileReader);

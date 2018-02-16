@@ -11,10 +11,12 @@ public  class  Constants {
 	public static final String GAME_INFO_KEY_PLAYER="playerInfo";
 	public static final String GAME_INFO_KEY_PLAYER_NAME="name";
 	public static final String GAME_INFO_KEY_PLAYER_STAR="star";
-	public static final String GAME_INFO_KEY_PLAYER_CUSRRENT_POSITION="currentposition";
+	public static final String GAME_INFO_KEY_PLAYER_CURRENT_POSITION="currentposition";
 	public static final String GAME_INFO_KEY_PLAYER_CUSRRENT_NAME="name";
 	public static final String GAME_INFO_KEY_PLAYER_ID="id";
 	public static final String ASCII_ART_DIR_NAME="ascii_art";
 	public static final String ASCII_ART_GAME_NAME="snakeAndLadder";
 	public static final int MAX_RETRY_FOR_INPUT = 5;
+	public static final int DIC_MINVALUE = 1;
+	public static final int DIC_MAXVALUE = 6;
 }

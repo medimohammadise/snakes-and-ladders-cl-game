@@ -1,6 +1,7 @@
 package my.practice.codechallenges.puzzle.menu;
-
-
+/*
+ * Menu for asking player information
+ */
 public enum PlayerMenuItem {
     PLAYER_NAME("Please enter your name"),
     PLAYER_ID("Please enter your id"),

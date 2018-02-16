@@ -28,11 +28,11 @@ public class SnakesandLaddersApp {
 			//existingPlayer = GameStateManager.getPlayerInfo(gameConfiguration);
 			
 				if (GameStateManager.getPreviousePosition(gameConfiguration) > 0) {
-					System.out.println(player.getName()+"!  You have not completed your last challange");
+					System.out.println("Hi "+player.getName()+"!  You have not completed your last challange");
 					if (mainMenu.resumePreviousGame())
 						new Game(gameConfiguration, player).play(mainMenu, true);
 					else {
-						System.out.println(player.getName()+"!  We are loading new game for You... ");
+						System.out.println("Hi "+player.getName()+"!  We are loading new game for You... ");
 						mainMenu.dispalyMainMenu(new Game(gameConfiguration, player),player, false);
 					}
 				}

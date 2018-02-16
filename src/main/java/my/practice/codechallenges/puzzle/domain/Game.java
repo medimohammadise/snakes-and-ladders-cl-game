@@ -1,14 +1,11 @@
 package my.practice.codechallenges.puzzle.domain;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import my.practice.codechallenges.puzzle.io.Colors;
 import my.practice.codechallenges.puzzle.io.GameConfigurationPorcessor;
-import my.practice.codechallenges.puzzle.io.UserInputProcessor;
 import my.practice.codechallenges.puzzle.manager.AsciiArtManager;
 import my.practice.codechallenges.puzzle.manager.GameStateManager;
 import my.practice.codechallenges.puzzle.manager.MenuManager;
@@ -17,23 +14,25 @@ public class Game {
 	private LinkedList<Player> players = new LinkedList<Player>();
 	private Board board = null;
 	private Player winner;
-	private UserInputProcessor userInputProcessor;
 	private Map<String, Object> gameConfiguration;
 
 	public Game(Map<String, Object> gameConfiguration, Player player) {
 		this.gameConfiguration = gameConfiguration;
 		int numSquares = Integer.valueOf(gameConfiguration.get("numberOfSqures").toString());
-		makeBoard(numSquares, (Map) gameConfiguration.get("ladders"), (Map) gameConfiguration.get("sankes"));
+		makeBoard(numSquares,  (Map<String,Object>) gameConfiguration.get("ladders"),  (Map<String,Object>) gameConfiguration.get("sankes"));
 		makePlayers(player);
-		userInputProcessor = new UserInputProcessor();
 	}
 
-	private void makeBoard(int numSquares, Map ladders, Map snakes) {
+	private void makeBoard(int numSquares, Map<String,Object> ladders, Map<String,Object> snakes) {
 		board = new Board(numSquares, ladders, snakes);
 	}
 
 	private void makePlayers(Player player) {
 		players.add(player);
+	}
+	//TODO this revision only supports one player
+	private Player getCurrentPalyer() {
+		return players.get(0);
 	}
 
 	public void play(MenuManager menuManager, boolean resume) {
@@ -69,8 +68,8 @@ public class Game {
 				menuManager.dispalyMainMenu(this, players.getFirst(), false);
 				break;	
 			case 5: //save configuration
-				this.gameConfiguration = GameStateManager.svaePosition(gameConfiguration,
-						players.get(0).getCurrentPosition());
+				this.gameConfiguration = GameStateManager.svaeGame(gameConfiguration,
+						getCurrentPalyer());
 
 				exitGame(true);
 				stopped = true;
@@ -82,10 +81,14 @@ public class Game {
 		}
 		if (!stopped) {
 			AsciiArtManager.printAsciArt("GreateYouWon");
+			this.gameConfiguration = GameStateManager.svaeGame(gameConfiguration,
+					getCurrentPalyer() );
 			GameStateManager.saveAsWinner(gameConfiguration);
-
-			exitGame(true);
+			
+			GameConfigurationPorcessor.saveStateIntoJson("configuration", players.getFirst().getId() + ".json",
+					this.gameConfiguration, players.getFirst().getId());
 			stopped = true;
+			menuManager.dispalyMainMenu(this, players.getFirst(), false);
 
 		}
 
@@ -101,14 +104,14 @@ public class Game {
 		sb.append(String.format("%5" + "s", Colors.GREEN.format("L^")) + "   " + "Ladder's Head\n");
 		sb.append(String.format("%5" + "s", Colors.GREEN.format("L")) + "   " + "Ladder's Tail\n");
 		sb.append("All snakes and ladders soecified by unique");
+		sb.append("\n");
 		return sb.toString();
 	}
 
 	private void movePlayer(int roll, Player player) {
-		// Player currentPlayer = players.remove(); // from the head ?
-		// currentPlayer.moveForward(roll);
+		// Player currentPlayer = players.remove(); // TODO for supproting multple player at future
 		player.moveForward(roll);
-		// players.add(currentPlayer); // to the tail
+		// players.add(currentPlayer); //  TODO for supproting multple player at future
 		if (player.wins())
 			winner = player;
 
@@ -139,10 +142,7 @@ public class Game {
 	}
 
 	private void placePlayersAtPreviouseSquare(Player palyer) {
-
 		board.findSquare(GameStateManager.getPreviousePosition(gameConfiguration)).enter(palyer);
-		;
-
 	}
 
 	private boolean notOver() {
@@ -154,11 +154,10 @@ public class Game {
 			GameConfigurationPorcessor.saveStateIntoJson("configuration", players.getFirst().getId() + ".json",
 					this.gameConfiguration, players.getFirst().getId());
 
-		System.out.println("You game sucessfull saved. Game existing within 20 second...");
+		System.out.println("You has game sucessfully saved. Game existing within 20 second...");
 		try {
 			TimeUnit.SECONDS.sleep(20);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.exit(1);

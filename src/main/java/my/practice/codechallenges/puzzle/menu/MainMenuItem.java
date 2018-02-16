@@ -1,5 +1,7 @@
 package my.practice.codechallenges.puzzle.menu;
-
+/*
+ * Game Main Menu
+ */
 
 public enum MainMenuItem {
     START("Start the game"),

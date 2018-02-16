@@ -1,11 +1,11 @@
 package my.practice.codechallenges.puzzle.domain;
 
 public class Player {
-	private Square square = null;
-	private String name;
 	private String id;
+	private String name;
 	private int currentPosition;
 	private int star;
+	private Square square = null;
 	public Player(String name,String id) {
 		this.name=name;
 		this.id=id;
@@ -17,7 +17,6 @@ public class Player {
 		this.currentPosition=currentposition;		
 	}
 	public String getName() {
-		// TODO Auto-generated method stub
 		return name;
 	}
 
@@ -29,11 +28,10 @@ public class Player {
 		this.square=square;
 		
 	}
-	@Override
-	public String toString () {
-		return name; 
-	}
 
+	/*
+	*  Main function for moving player 
+    */
 	public void moveForward(int moves) {
 		assert moves>0 : "non-positive moves"; 
 		square.leave(this);
@@ -43,8 +41,7 @@ public class Player {
 		
 	}
 
-	public boolean wins() {
-		
+	public boolean wins() {	
 		return square.islastSquare();
 	}
 
@@ -77,6 +74,9 @@ public class Player {
 	public void setStar(int star) {
 		this.star = star;
 	}
-	
+	@Override
+	public String toString () {
+		return name; 
+	}
 
 }
